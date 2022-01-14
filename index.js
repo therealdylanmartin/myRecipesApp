@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const ejsMate = require('ejs-mate');
 const path = require('path');
+const herokuData = require('./json/heroku-data');
 const methodOverride = require('method-override');
 const fetch = require('node-fetch');
 const { v4: uuidv4 } = require('uuid');
@@ -14,8 +15,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-const recipesEndpoint = 'http://localhost:3001/recipes';
-const specialsEndpoint = 'http://localhost:3001/specials';
+
+const recipesEndpoint = herokuData.recipes; // 'http://localhost:3001/recipes'
+const specialsEndpoint = herokuData.specials; // 'http://localhost:3001/specials'
 
 const formatDate = (date) => {
     let hours = date.getHours();
