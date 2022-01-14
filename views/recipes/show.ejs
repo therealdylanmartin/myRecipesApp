@@ -90,21 +90,21 @@
             <div class="uk-child-width-expand@s uk-text-center uk-margin-small" uk-grid>
 
                 <div>
-                    <label class="uk-form-label" for="servings">Servings</label>
+                    <label class="uk-form-label uk-text-left" for="servings">Servings</label>
                     <div class="uk-form-controls">
                         <input class="uk-input" id="servings" name="servings" type="number" value="<%= recipe.servings %>" required>
                     </div>
                 </div>
 
                 <div>
-                    <label class="uk-form-label" for="prepTime">Prep Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
+                    <label class="uk-form-label uk-text-left" for="prepTime">Prep Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
                     <div class="uk-form-controls">
                         <input class="uk-input" id="prepTime" name="prepTime" type="number"<% if(recipe.prepTime) { %> value="<%= recipe.prepTime %>"<% } %>>
                     </div>
                 </div>
 
                 <div>
-                    <label class="uk-form-label" for="cookTime">Cook Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
+                    <label class="uk-form-label uk-text-left" for="cookTime">Cook Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
                     <div class="uk-form-controls">
                         <input class="uk-input" id="cookTime" name="cookTime" type="number"<% if(recipe.cookTime) { %> value="<%= recipe.cookTime %>"<% } %>>
                     </div>
