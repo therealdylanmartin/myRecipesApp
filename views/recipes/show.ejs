@@ -32,8 +32,8 @@
                 <li>
                     <% let ingredient = recipe.ingredients %>
 
-                    <% if(ingredient[i].amount) { %>
-                        <%= ingredient[i].amount %> <%= ingredient[i].measurement %> <%= ingredient[i].name %>
+                    <% if(ingredient[i].name) { %>
+                        <% if(ingredient[i].amount !== null) { %><%= ingredient[i].amount %><% } %> <%= ingredient[i].measurement %> <%= ingredient[i].name %>
                         <% if(ingredient[i].specialTitle) { %>
                             <a class="uk-link uk-text-small uk-margin-small-left" uk-toggle="target: #specials-toggle-<%= i %>">
                                 <%= ingredient[i].specialType.charAt(0).toUpperCase() %><%= ingredient[i].specialType.substring(1) %> Special
