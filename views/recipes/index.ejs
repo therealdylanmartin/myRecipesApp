@@ -1,0 +1,20 @@
+<% layout('layouts/boilerplate')%>
+
+<main class="recipes__container uk-flex uk-flex-wrap uk-flex-stretch">
+    <% for(let recipe of recipes) { %>
+        <a class="recipe__container uk-card uk-card-default uk-text-decoration-none uk-link-toggle" href="/recipes/<%= recipe.uuid %>">
+            <div class="uk-card-media-top uk-inline">
+                <img src="<% if(recipe.images) { %><%= recipe.images.medium %><% } else { %>/img/cutting-board--m.jpg<% } %>" alt="">
+                <div class="uk-overlay-default uk-position-cover"></div>
+                <div class="uk-overlay uk-position-bottom uk-dark uk-text-right">
+                    <p>View Recipe &rarr;</p>
+                </div>
+            </div>
+            <div class="uk-card-body uk-text-center uk-padding-small">
+                <h2 class="uk-link-heading"><%= recipe.title %></h2>
+                <p class="uk-text-default uk-margin-small-top"><%= recipe.description %></p>
+                <p class="uk-text-small">Servings: <%= recipe.servings %> | Total Time: <%= recipe.prepTime + recipe.cookTime %></p>
+            </div>
+        </a>
+    <% } %>
+</main>

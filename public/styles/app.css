@@ -1,0 +1,86 @@
+body {
+    background-color: #CEEAF5;
+}
+
+nav {
+    background-color: #97BAEC;
+}
+
+.uk-logo img {
+    max-width: 60px;
+}
+
+.recipes__container {
+    margin: 0 auto;
+    padding: 10px 10px 0;
+    max-width: 1200px;
+}
+
+.recipe__container {
+    margin: 10px;
+    width: 100%;
+}
+
+.recipe__container:hover,
+.recipe__container:active,
+.recipe__container:focus {
+    color: #0f6ecd!important;
+    transition: color .2s ease-in;
+}
+
+.uk-overlay,
+.uk-overlay-default {
+    opacity: 0;
+    transition: opacity .2s ease-in;
+}
+
+.uk-overlay {
+    padding: 10px 15px;
+}
+
+.recipe__container:hover .uk-overlay,
+.recipe__container:active .uk-overlay,
+.recipe__container:focus .uk-overlay {
+    opacity: 1;
+}
+
+.recipe__container:hover .uk-overlay-default,
+.recipe__container:active .uk-overlay-default,
+.recipe__container:focus .uk-overlay-default {
+    opacity: .85;
+}
+
+.recipe__post-btn {
+    margin-top: 15px;
+}
+
+.recipe-display__container {
+    margin: -20px 0 -40px;
+    padding-bottom: 20px;
+    max-width: 740px;
+}
+
+.recipe__inner-container {
+    margin: 0 15px;
+}
+
+@media only screen and (min-width: 640px) {
+    .recipe__container {
+        width: calc(100% / 2 - 20px);
+    }
+    .recipe__inner-container {
+        margin: 0 auto;
+        max-width: 600px;
+    }
+}
+
+@media only screen and (min-width: 740px) {
+    .recipe-display__container {
+        margin: 0 auto; 
+    }
+}
+@media only screen and (min-width: 960px) {
+    .recipe__container {
+        width: calc(100% / 3 - 20px);
+    }
+}

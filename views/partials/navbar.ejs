@@ -1,0 +1,25 @@
+<nav class="uk-navbar-container uk-margin" uk-navbar>
+    <div class="uk-navbar-left">
+        <a class="uk-navbar-item uk-logo uk-padding-remove-right" href="/recipes">
+            <img src="/img/recipe-book.png" alt="">
+        </a>
+
+        <ul class="uk-navbar-nav">
+            <li class="uk-active">
+                <a href="/recipes">
+                    My Recipes
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="uk-navbar-item uk-navbar-right">
+        <a href="/recipes/new">
+            <!-- button toggling the modal -->
+            <button class="uk-button uk-button-primary uk-padding-small uk-padding-remove-vertical" uk-toggle="target: #new-recipe">
+                <span class="uk-icon" uk-icon="icon: plus"></span>
+                Add Recipe
+            </button>
+        </a>
+    </div>
+</nav>

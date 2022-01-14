@@ -1,0 +1,130 @@
+<% layout('layouts/boilerplate')%>
+
+<main class="recipe-display__container uk-card uk-card-default uk-padding-medium-bottom">
+    <img src="<% if(recipe.images) { %><%= recipe.images.full %><% } else { %>/img/cutting-board.jpg<% } %>" alt="">
+    <div class="recipe__inner-container">
+
+        <h1 class="uk-text-bold uk-margin-top"><%= recipe.title %></h1>
+        <h3 class="uk-text-medium uk-text-primary uk-text-italic uk-margin-small-top uk-margin-small-bottom"><%= recipe.description %></h3>
+        <hr class="uk-divider-icon">
+
+        <h4 class="uk-text-small uk-margin-small-top">
+            Servings: <%= recipe.servings %>
+            <% if(recipe.prepTime) { %>
+                <br>Prep Time: <%= recipe.prepTime %>
+            <% } %> 
+            <% if(recipe.cookTime) { %>
+                <br>Cook Time: <%= recipe.cookTime %>
+            <% } %>
+        </h4>
+
+        <% const postDate = recipe.postDate.split(' ') %>
+        <% const editDate = recipe.editDate.split(' ') %>
+        <h5 class="uk-text-meta uk-margin-small-top">
+            Posted: <%= postDate[0] %><br>
+            Revised: <%= editDate[0] %>
+        </h5>
+        <hr class="uk-divider-small">
+
+        <h2 class="uk-text-large uk-margin-remove-top">Ingredients</h2>
+        <ul class="uk-list uk-list-hyphen">
+            <% for(let i = 0; i < recipe.ingredients.length; i++) { %>
+                <li>
+                    <% let ingredient = recipe.ingredients %>
+
+                    <% if(ingredient[i].amount) { %>
+                        <%= ingredient[i].amount %> <%= ingredient[i].measurement %> <%= ingredient[i].name %>
+                        <% if(ingredient[i].specialTitle) { %>
+                            <a class="uk-link uk-text-small uk-margin-small-left" uk-toggle="target: #specials-toggle-<%= i %>">
+                                <%= ingredient[i].specialType.charAt(0).toUpperCase() %><%= ingredient[i].specialType.substring(1) %> Special
+                            </a>
+                            <p class="uk-text-small uk-margin-small-top" id="specials-toggle-<%= i %>" class hidden>
+                                <span class="uk-text-medium uk-text-primary uk-text-italic"><%= ingredient[i].specialTitle %></span><br>
+                                <%= ingredient[i].specialText %>
+                            </p>
+                        <% } %>
+                    <% } else { %>
+                        <%= ingredient[i] %>
+                    <% } %>
+                </li>
+            <% } %>
+        </ul>
+        <hr class="uk-divider-small">
+
+        <h2 class="uk-text-large uk-margin-remove-top">Directions</h2>
+        <% for(let i = 0; i < recipe.directions.length; i++) { %>
+            <% let recipeStep = recipe.directions %>
+            <% if(recipeStep[i].instructions) { %>
+                <p><% if(recipeStep.optional) { %>Optional: <% } %><%= recipeStep.instructions %></p>
+            <% } else { %>
+                <p><%= recipeStep[i] %></p>
+            <% } %>
+        <% } %>
+        <hr class="uk-divider-small">
+
+        <!-- This is the edit modal button -->
+        <button class="uk-button uk-button-primary uk-margin-small-bottom" uk-toggle="target: #edit-recipe">Edit</button>
+    </div>
+</main>
+
+<!-- This is the modal -->
+<div id="edit-recipe" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title uk-margin-small-bottom">Update Recipe</h2>
+        <form class="uk-form-stacked" method="post" action="/recipes/<%= recipe.uuid %>?_method=PUT">
+
+            <div class="uk-margin">
+                <label class="uk-form-label" for="title">Title</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="title" name="title" type="text" value="<%= recipe.title %>" required>
+                </div>
+            </div>
+
+            <div class="uk-margin-small">
+                <label class="uk-form-label" for="description">Short Description</label>
+                <div class="uk-form-controls">
+                    <input class="uk-input" id="description" name="description" type="text" value="<%= recipe.description %>" required>
+                </div>
+            </div>
+
+            <div class="uk-child-width-expand@s uk-text-center uk-margin-small" uk-grid>
+
+                <div>
+                    <label class="uk-form-label" for="servings">Servings</label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="servings" name="servings" type="number" value="<%= recipe.servings %>" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="uk-form-label" for="prepTime">Prep Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="prepTime" name="prepTime" type="number"<% if(recipe.prepTime) { %> value="<%= recipe.prepTime %>"<% } %>>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="uk-form-label" for="cookTime">Cook Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
+                    <div class="uk-form-controls">
+                        <input class="uk-input" id="cookTime" name="cookTime" type="number"<% if(recipe.cookTime) { %> value="<%= recipe.cookTime %>"<% } %>>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="uk-margin-small">
+                <label class="uk-form-label" for="ingredients">Ingredients <span class="uk-text-small uk-text-primary">(seperated by line breaks)</span></label>
+                <textarea class="uk-textarea" id="ingredients" name="ingredients" rows="5" type="text" required><% for(let i = 0; i < recipe.ingredients.length; i++) { %><% let ingredient = recipe.ingredients %><% if(ingredient[i].amount) { %><%= ingredient[i].amount %> <%= ingredient[i].measurement %> <%= ingredient[i].name %>\r<% } else { %><%= ingredient[i] %><% } %><% } %></textarea>
+            </div>
+
+            <div class="uk-margin-small uk-padding-small-bottom">
+                <label class="uk-form-label" for="directions">Directions <span class="uk-text-small uk-text-primary">(steps separated by line breaks)</span></label>
+                <textarea class="uk-textarea" id="directions" name="directions" rows="5" type="text" required><% for(let i = 0; i < recipe.directions.length; i++) { %><% let recipeStep = recipe.directions %><% if(recipeStep[i].instructions) { %><% if(recipeStep.optional) { %>Optional: <% } %><%= recipeStep.instructions %>\r<% } else { %><%= recipeStep[i] %><% } %><% } %></textarea>
+            </div>
+    
+            <button class="recipe__post-btn uk-button uk-button-primary uk-display-block uk-margin-auto-left">Save</button>
+
+        </form>
+        <button class="uk-button uk-button-danger uk-display-block uk-margin-auto-left uk-modal-close">Cancel</button>
+    </div>
+</div>
