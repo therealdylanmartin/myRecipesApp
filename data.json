@@ -488,7 +488,7 @@
         "full": "/img/sesame-tuna.jpg",
         "medium": "/img/sesame-tuna--m.jpg"
       },
-      "servings": 2,
+      "servings": 4,
       "prepTime": 15,
       "cookTime": 10,
       "ingredients": [
@@ -507,7 +507,7 @@
       ],
       "uuid": "faf5a0f7-d62b-4641-b234-a02dab1cdd67",
       "postDate": "1/13/2022  07:37:09 PM",
-      "editDate": "1/13/2022  11:16 pm"
+      "editDate": "1/14/2022  1:46 am"
     }
   ],
   "specials": [

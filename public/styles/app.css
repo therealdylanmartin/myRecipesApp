@@ -2,12 +2,24 @@ body {
     background-color: #CEEAF5;
 }
 
-nav {
-    background-color: #97BAEC;
+body.home-body {
+    background-color: #fff;
+}
+
+nav.home-nav {
+    background-color: rgba(255,255,255,.45);
 }
 
 .uk-logo img {
     max-width: 60px;
+}
+
+.slideshow__container {
+    margin-top: -80px;
+}
+
+.uk-overlay.uk-transition-slide-bottom {
+    padding: 20px;
 }
 
 .recipes__container {
@@ -57,7 +69,7 @@ nav {
 .recipe-display__container {
     margin: -20px 0 -40px;
     padding-bottom: 20px;
-    max-width: 740px;
+    max-width: 680px;
 }
 
 .recipe__inner-container {

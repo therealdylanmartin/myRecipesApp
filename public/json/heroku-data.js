@@ -1,4 +1,4 @@
-{
+module.exports.herokuDate = {
 "recipes": [
     {
     "uuid": "e80ea521-4d42-48fe-a7a6-ac8952bc0de4",

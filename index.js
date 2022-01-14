@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const ejsMate = require('ejs-mate');
 const path = require('path');
-const herokuData = require('./public/json/heroku-data');
+// const herokuData = require('./public/json/heroku-data');
 const methodOverride = require('method-override');
 const fetch = require('node-fetch');
 const { v4: uuidv4 } = require('uuid');
@@ -15,9 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-const recipesEndpoint = herokuData.recipes; // 'http://localhost:3001/recipes'
-const specialsEndpoint = herokuData.specials; // 'http://localhost:3001/specials'
+const recipesEndpoint = 'http://localhost:3001/recipes'; // herokuData.recipes
+const specialsEndpoint = 'http://localhost:3001/specials'; // herokuData.specials
 
 const formatDate = (date) => {
     let hours = date.getHours();
@@ -32,8 +31,45 @@ const formatDate = (date) => {
     return (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear() + "  " + strTime;
 }
 
-app.get('/', (req, res) => {
-    res.redirect('/recipes');
+const updateRecipe = async (objArray, formData, id) => {
+    let updatedRecipe = {};
+
+    objArray.forEach(recipe => {
+        if(recipe.uuid === id) {
+            recipe.title = formData.title;
+            recipe.description = formData.description;
+            recipe.servings = Number(formData.servings);
+            if(formData.prepTime) {
+                recipe.prepTime = Number(formData.prepTime);
+            }
+            if(formData.cookTime) {
+                recipe.cookTime = Number(formData.cookTime);
+            }
+            recipe.ingredients = formData.ingredients.split("\n");
+            recipe.directions = formData.directions.split("\n");
+
+            const date = new Date(),
+                    formattedDate = formatDate(date);
+            recipe.editDate = formattedDate;
+
+            updatedRecipe = recipe;
+        }
+    })
+
+    await fetch(`${recipesEndpoint}/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedRecipe),
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then(res => res.json())
+        .catch(err => console.log(err));
+}
+
+app.get('/', async (req, res) => {
+    const fetchedRecipes = await fetch(recipesEndpoint);
+    const recipes = await fetchedRecipes.json();
+    res.locals.title = "Browse Recipes";
+    res.render('home', { recipes });
 })
 
 app.get('/recipes', async (req, res) => {
@@ -99,40 +135,6 @@ app.get('/recipes/:id', async (req, res) => {
         }
     })
 })
-
-const updateRecipe = async (objArray, formData, id) => {
-    let updatedRecipe = {};
-
-    objArray.forEach(recipe => {
-        if(recipe.uuid === id) {
-            recipe.title = formData.title;
-            recipe.description = formData.description;
-            recipe.servings = Number(formData.servings);
-            if(formData.prepTime) {
-                recipe.prepTime = Number(formData.prepTime);
-            }
-            if(formData.cookTime) {
-                recipe.cookTime = Number(formData.cookTime);
-            }
-            recipe.ingredients = formData.ingredients.split("\n");
-            recipe.directions = formData.directions.split("\n");
-
-            const date = new Date(),
-                    formattedDate = formatDate(date);
-            recipe.editDate = formattedDate;
-
-            updatedRecipe = recipe;
-        }
-    })
-
-    await fetch(`${recipesEndpoint}/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(updatedRecipe),
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then(res => res.json())
-        .catch(err => console.log(err));
-}
 
 app.put('/recipes/:id', async (req, res) => {
     const { id } = req.params;

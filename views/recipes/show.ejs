@@ -55,7 +55,7 @@
         <% for(let i = 0; i < recipe.directions.length; i++) { %>
             <% let recipeStep = recipe.directions %>
             <% if(recipeStep[i].instructions) { %>
-                <p><% if(recipeStep.optional) { %>Optional: <% } %><%= recipeStep.instructions %></p>
+                <p><% if(recipeStep[i].optional) { %>Optional: <% } %><%= recipeStep[i].instructions %></p>
             <% } else { %>
                 <p><%= recipeStep[i] %></p>
             <% } %>
@@ -70,7 +70,7 @@
 <!-- This is the modal -->
 <div id="edit-recipe" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
-        <h2 class="uk-modal-title uk-margin-small-bottom">Update Recipe</h2>
+        <h2 class="uk-modal-title uk-margin-small-bottom">Update <%= recipe.title %></h2>
         <form class="uk-form-stacked" method="post" action="/recipes/<%= recipe.uuid %>?_method=PUT">
 
             <div class="uk-margin">
@@ -114,12 +114,12 @@
 
             <div class="uk-margin-small">
                 <label class="uk-form-label" for="ingredients">Ingredients <span class="uk-text-small uk-text-primary">(seperated by line breaks)</span></label>
-                <textarea class="uk-textarea" id="ingredients" name="ingredients" rows="5" type="text" required><% for(let i = 0; i < recipe.ingredients.length; i++) { %><% let ingredient = recipe.ingredients %><% if(ingredient[i].amount) { %><%= ingredient[i].amount %> <%= ingredient[i].measurement %> <%= ingredient[i].name %>\r<% } else { %><%= ingredient[i] %><% } %><% } %></textarea>
+                <textarea class="uk-textarea" id="ingredients" name="ingredients" rows="5" type="text" required><% for(let i = 0; i < recipe.ingredients.length; i++) { %><% let ingredient = recipe.ingredients %><% if(ingredient[i].amount) { %><%= ingredient[i].amount %> <%= ingredient[i].measurement %> <% if(ingredient.length - 1 !== i) { %><%= `${ingredient[i].name}\r` %><% } else { %><%= ingredient[i].name %><% } %><% } else { %><%= ingredient[i] %><% } %><% } %></textarea>
             </div>
 
             <div class="uk-margin-small uk-padding-small-bottom">
                 <label class="uk-form-label" for="directions">Directions <span class="uk-text-small uk-text-primary">(steps separated by line breaks)</span></label>
-                <textarea class="uk-textarea" id="directions" name="directions" rows="5" type="text" required><% for(let i = 0; i < recipe.directions.length; i++) { %><% let recipeStep = recipe.directions %><% if(recipeStep[i].instructions) { %><% if(recipeStep.optional) { %>Optional: <% } %><%= recipeStep.instructions %>\r<% } else { %><%= recipeStep[i] %><% } %><% } %></textarea>
+                <textarea class="uk-textarea" id="directions" name="directions" rows="5" type="text" required><% for(let i = 0; i < recipe.directions.length; i++) { %><% let recipeStep = recipe.directions %><% if(recipeStep[i].instructions) { %><% if(recipeStep[i].optional) { %>Optional: <% } %><% if(recipeStep.length - 1 !== i) { %><%= `${recipeStep[i].instructions}\r` %><% } else { %><%= recipeStep[i].instructions %><% } %><% } else { %><%= recipeStep[i] %><% } %><% } %></textarea>
             </div>
     
             <button class="recipe__post-btn uk-button uk-button-primary uk-display-block uk-margin-auto-left">Save</button>

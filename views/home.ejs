@@ -1,0 +1,146 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Recipes</title>
+        
+        <!-- Favicon -->
+        <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/img/favicons/apple-touch-icon-57x57.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/img/favicons/apple-touch-icon-114x114.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/img/favicons/apple-touch-icon-72x72.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/img/favicons/apple-touch-icon-144x144.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/img/favicons/apple-touch-icon-60x60.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/img/favicons/apple-touch-icon-120x120.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/img/favicons/apple-touch-icon-76x76.png" />
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/img/favicons/apple-touch-icon-152x152.png" />
+        <link rel="icon" type="image/png" href="/img/favicons/favicon-196x196.png" sizes="196x196" />
+        <link rel="icon" type="image/png" href="/img/favicons/favicon-96x96.png" sizes="96x96" />
+        <link rel="icon" type="image/png" href="/img/favicons/favicon-32x32.png" sizes="32x32" />
+        <link rel="icon" type="image/png" href="/img/favicons/favicon-16x16.png" sizes="16x16" />
+        <link rel="icon" type="image/png" href="/img/favicons/favicon-128.png" sizes="128x128" />
+    
+        <!-- UIkit CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.10.0/dist/css/uikit.min.css" />
+        <!-- My CSS -->
+        <link rel="stylesheet" href="/styles/app.css">
+        <!-- UIkit JS -->
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.10.0/dist/js/uikit.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/uikit@3.10.0/dist/js/uikit-icons.min.js" defer></script>
+    </head>
+
+    <body class="home-body">
+        
+        <nav class="home-nav uk-navbar-container uk-navbar-transparent" style="z-index: 100;" uk-navbar>
+            <div class="uk-navbar-left">
+                <a class="uk-navbar-item uk-logo" href="/">
+                    <img src="/img/recipe-book.png" alt="">
+                </a>
+        
+                <ul class="uk-navbar-nav">
+                    <li class="uk-active">
+                        <a href="/recipes">
+                            My Recipes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        
+            <div class="uk-navbar-item uk-navbar-right">
+                <a href="/recipes/new">
+                    <!-- button toggling the modal -->
+                    <button class="uk-button uk-button-default uk-padding-small uk-padding-remove-vertical" uk-toggle="target: #new-recipe">
+                        <span class="uk-icon" uk-icon="icon: plus"></span>
+                        Add Recipe
+                    </button>
+                </a>
+            </div>
+        </nav>
+
+        <main class="slideshow__container uk-position-relative uk-visible-toggle uk-light" tabindex="-1" uk-slideshow="animation: fade; autoplay: true; autoplay-interval: 6000">
+
+            <ul class="uk-slideshow-items" uk-height-viewport="min-height: 300">
+
+                <% for(let recipe of recipes) { %>
+                    <li>
+                        <a href="/recipes/<%= recipe.uuid %>">
+                            <img src="<% if(recipe.images) { %><%= recipe.images.full %><% } else { %>/img/cutting-board.jpg<% } %>" alt="" uk-cover>
+                            <div class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center uk-padding-small uk-transition-slide-bottom">
+                                <h2 class="uk-margin-remove"><%= recipe.title %></h2>
+                                <hr class="uk-divider-icon uk-margin-small-top uk-margin-small-bottom">
+                                <h3 class="uk-margin-remove"><%= recipe.description %></h3>
+                            </div>
+                        </a>
+                    </li>
+                <% } %>
+
+            </ul>
+
+            <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+            <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+
+        </main>
+
+        <!-- This is the modal -->
+        <div id="new-recipe" uk-modal>
+            <div class="uk-modal-dialog uk-modal-body">
+                <h2 class="uk-modal-title uk-margin-small-bottom">Add New Recipe</h2>
+                <form class="uk-form-stacked" action="/recipes" method="post">
+
+                    <div class="uk-margin-small">
+                        <label class="uk-form-label" for="title">Title</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="title" name="title" type="text" required>
+                        </div>
+                    </div>
+
+                    <div class="uk-margin-small">
+                        <label class="uk-form-label" for="description">Short Description</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="description" name="description" type="text" required>
+                        </div>
+                    </div>
+
+                    <div class="uk-child-width-expand@s uk-text-center uk-margin-small" uk-grid>
+
+                        <div>
+                            <label class="uk-form-label" for="servings">Servings</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="servings" name="servings" type="number" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="uk-form-label" for="prepTime">Prep Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="prepTime" name="prepTime" type="number">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="uk-form-label" for="cookTime">Cook Time <span class="uk-text-small uk-text-primary">(in minutes)</span></label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="cookTime" name="cookTime" type="number">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="uk-margin-small">
+                        <label class="uk-form-label" for="ingredients">Ingredients <span class="uk-text-small uk-text-primary">(seperated by line breaks)</span></label>
+                        <textarea class="uk-textarea" id="ingredients" name="ingredients" rows="5" type="text" required></textarea>
+                    </div>
+
+                    <div class="uk-margin-small uk-padding-small-bottom">
+                        <label class="uk-form-label" for="directions">Directions <span class="uk-text-small uk-text-primary">(steps separated by line breaks)</span></label>
+                        <textarea class="uk-textarea" id="directions" name="directions" rows="5" type="text" required></textarea>
+                    </div>
+            
+                    <button class="recipe__post-btn uk-button uk-button-primary uk-display-block uk-margin-auto-left">Save</button>
+
+                </form>
+                <button class="uk-button uk-button-danger uk-display-block uk-margin-auto-left uk-modal-close">Cancel</button>
+            </div>
+        </div>
+    </body>
+</html>
